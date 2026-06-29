@@ -24,7 +24,7 @@ abstract class RegenerateUrlRewritesAbstract extends Command
 {
     const INPUT_KEY_STORE_ID = 'store-id';
     const INPUT_KEY_REGENERATE_ENTITY_TYPE = 'entity-type';
-    const INPUT_KEY_SAVE_REWRITES_HISTORY = 'save-old-urls';
+    const INPUT_KEY_SAVE_REWRITES_HISTORY = 'no-save-old-urls';
     const INPUT_KEY_NO_REGEN_URL_KEY = 'no-regen-url-key';
     const INPUT_KEY_NO_REINDEX = 'no-reindex';
     const INPUT_KEY_NO_PROGRESS = 'no-progress';
@@ -34,6 +34,7 @@ abstract class RegenerateUrlRewritesAbstract extends Command
     const INPUT_KEY_PRODUCTS_RANGE = 'products-range';
     const INPUT_KEY_CATEGORY_ID = 'category-id';
     const INPUT_KEY_PRODUCT_ID = 'product-id';
+    const INPUT_KEY_PRODUCT_SKU_FILTER = 'sku';
     const INPUT_KEY_REGENERATE_ENTITY_TYPE_PRODUCT = 'product';
     const INPUT_KEY_REGENERATE_ENTITY_TYPE_CATEGORY = 'category';
 
@@ -112,7 +113,7 @@ abstract class RegenerateUrlRewritesAbstract extends Command
 
         // set default config values
         $this->_commandOptions['entityType'] = 'product';
-        $this->_commandOptions['saveOldUrls'] = false;
+        $this->_commandOptions['saveOldUrls'] = true;
         $this->_commandOptions['runReindex'] = true;
         $this->_commandOptions['storesList'] = [];
         $this->_commandOptions['showProgress'] = true;
@@ -122,6 +123,7 @@ abstract class RegenerateUrlRewritesAbstract extends Command
         $this->_commandOptions['productsFilter'] = [];
         $this->_commandOptions['categoryId'] = null;
         $this->_commandOptions['productId'] = null;
+        $this->_commandOptions['skuFilter'] = [];
         $this->_commandOptions['noRegenUrlKey'] = false;
     }
 
