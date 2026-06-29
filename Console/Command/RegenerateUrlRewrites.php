@@ -109,6 +109,12 @@ class RegenerateUrlRewrites extends RegenerateUrlRewritesAbstract
                     InputOption::VALUE_NONE,
                     'Prevent url_key regeneration'
                 ),
+                new InputOption(
+                    self::INPUT_KEY_PRODUCT_SKU_FILTER,
+                    null,
+                    InputOption::VALUE_OPTIONAL,
+                    'Filter products by SKU prefix(es), comma-separated. Wildcards (*) are supported, e.g.: "HOB-*,WOL-*"'
+                ),
             ]);
     }
 
@@ -207,7 +213,7 @@ class RegenerateUrlRewrites extends RegenerateUrlRewritesAbstract
      */
     private function _printRunHeader(string $entityType): void
     {
-        $this->io->writeln([
+        $lines = [
             sprintf('  <fg=gray>Entity type</>   <info>%s</info>', $entityType),
             sprintf('  <fg=gray>Stores</>        <info>%d</info>', count($this->_commandOptions['storesList'])),
             sprintf(
@@ -218,7 +224,16 @@ class RegenerateUrlRewrites extends RegenerateUrlRewritesAbstract
                 '  <fg=gray>Regen url_key</> %s',
                 $this->_commandOptions['noRegenUrlKey'] ? '<comment>no</comment>' : '<info>yes</info>'
             ),
-        ]);
+        ];
+
+        if (!empty($this->_commandOptions['skuFilter'])) {
+            $lines[] = sprintf(
+                '  <fg=gray>SKU filter</>    <info>%s</info>',
+                implode(', ', $this->_commandOptions['skuFilter'])
+            );
+        }
+
+        $this->io->writeln($lines);
     }
 
     /**
@@ -301,6 +316,15 @@ class RegenerateUrlRewrites extends RegenerateUrlRewritesAbstract
             }
         }
 
+        if (!empty($options[self::INPUT_KEY_PRODUCT_SKU_FILTER])) {
+            $this->_commandOptions['skuFilter'] = array_filter(
+                array_map('trim', explode(',', (string)$options[self::INPUT_KEY_PRODUCT_SKU_FILTER]))
+            );
+            if (!empty($this->_commandOptions['skuFilter'])) {
+                $distinctOptionsUsed++;
+            }
+        }
+
         if (isset($options[self::INPUT_KEY_CATEGORIES_RANGE])) {
             $this->_commandOptions['categoriesFilter'] = $this->_generateIdsRangeArray(
                 $options[self::INPUT_KEY_CATEGORIES_RANGE],
@@ -344,6 +368,7 @@ class RegenerateUrlRewrites extends RegenerateUrlRewritesAbstract
             && (
                 count($this->_commandOptions['productsFilter']) > 0
                 || (int) $this->_commandOptions['productId'] > 0
+                || count($this->_commandOptions['skuFilter']) > 0
             )
         ) {
             $this->_errors[] = $this->_getLogicalConflictError(

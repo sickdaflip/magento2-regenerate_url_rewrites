@@ -292,6 +292,16 @@ class RegenerateProductRewrites extends AbstractRegenerateRewrites
 
         if (count($productsFilter) > 0) {
             $productsCollection->addIdFilter($productsFilter);
+        } elseif (!empty($this->regenerateOptions['skuFilter'])) {
+            $skuConditions = [];
+            foreach ($this->regenerateOptions['skuFilter'] as $skuPattern) {
+                // replace * with SQL wildcard; if no wildcard treat as prefix
+                $likeValue = str_contains($skuPattern, '*')
+                    ? str_replace('*', '%', $skuPattern)
+                    : $skuPattern . '%';
+                $skuConditions[] = ['like' => $likeValue];
+            }
+            $productsCollection->addAttributeToFilter('sku', $skuConditions);
         }
 
         return $productsCollection;

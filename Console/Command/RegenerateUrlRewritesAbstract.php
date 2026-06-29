@@ -34,6 +34,7 @@ abstract class RegenerateUrlRewritesAbstract extends Command
     const INPUT_KEY_PRODUCTS_RANGE = 'products-range';
     const INPUT_KEY_CATEGORY_ID = 'category-id';
     const INPUT_KEY_PRODUCT_ID = 'product-id';
+    const INPUT_KEY_PRODUCT_SKU_FILTER = 'sku';
     const INPUT_KEY_REGENERATE_ENTITY_TYPE_PRODUCT = 'product';
     const INPUT_KEY_REGENERATE_ENTITY_TYPE_CATEGORY = 'category';
 
@@ -122,6 +123,7 @@ abstract class RegenerateUrlRewritesAbstract extends Command
         $this->_commandOptions['productsFilter'] = [];
         $this->_commandOptions['categoryId'] = null;
         $this->_commandOptions['productId'] = null;
+        $this->_commandOptions['skuFilter'] = [];
         $this->_commandOptions['noRegenUrlKey'] = false;
     }
 
