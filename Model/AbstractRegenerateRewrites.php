@@ -148,7 +148,7 @@ abstract class AbstractRegenerateRewrites
                 $this->_getResourceConnection()->getConnection()->insertOnDuplicate(
                     $this->_getMainTableName(),
                     $data,
-                    ['request_path', 'metadata']
+                    ['request_path', 'target_path', 'redirect_type', 'metadata']
                 );
             }
             $this->_getResourceConnection()->getConnection()->commit();
