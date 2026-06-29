@@ -24,7 +24,7 @@ abstract class RegenerateUrlRewritesAbstract extends Command
 {
     const INPUT_KEY_STORE_ID = 'store-id';
     const INPUT_KEY_REGENERATE_ENTITY_TYPE = 'entity-type';
-    const INPUT_KEY_SAVE_REWRITES_HISTORY = 'save-old-urls';
+    const INPUT_KEY_SAVE_REWRITES_HISTORY = 'no-save-old-urls';
     const INPUT_KEY_NO_REGEN_URL_KEY = 'no-regen-url-key';
     const INPUT_KEY_NO_REINDEX = 'no-reindex';
     const INPUT_KEY_NO_PROGRESS = 'no-progress';
@@ -113,7 +113,7 @@ abstract class RegenerateUrlRewritesAbstract extends Command
 
         // set default config values
         $this->_commandOptions['entityType'] = 'product';
-        $this->_commandOptions['saveOldUrls'] = false;
+        $this->_commandOptions['saveOldUrls'] = true;
         $this->_commandOptions['runReindex'] = true;
         $this->_commandOptions['storesList'] = [];
         $this->_commandOptions['showProgress'] = true;

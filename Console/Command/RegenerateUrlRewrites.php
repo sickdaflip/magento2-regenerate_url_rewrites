@@ -53,7 +53,7 @@ class RegenerateUrlRewrites extends RegenerateUrlRewritesAbstract
                     self::INPUT_KEY_SAVE_REWRITES_HISTORY,
                     null,
                     InputOption::VALUE_NONE,
-                    'Save current URL Rewrites'
+                    'Do NOT save current URL Rewrites as 301 redirects (default: old URLs are saved)'
                 ),
                 new InputOption(
                     self::INPUT_KEY_NO_REINDEX,
@@ -218,7 +218,7 @@ class RegenerateUrlRewrites extends RegenerateUrlRewritesAbstract
             sprintf('  <fg=gray>Stores</>        <info>%d</info>', count($this->_commandOptions['storesList'])),
             sprintf(
                 '  <fg=gray>Save old URLs</> %s',
-                $this->_commandOptions['saveOldUrls'] ? '<info>yes</info>' : '<comment>no</comment>'
+                $this->_commandOptions['saveOldUrls'] ? '<info>yes</info>' : '<comment>no (301 redirects will NOT be created)</comment>'
             ),
             sprintf(
                 '  <fg=gray>Regen url_key</> %s',
@@ -275,7 +275,7 @@ class RegenerateUrlRewrites extends RegenerateUrlRewritesAbstract
         }
 
         if (isset($options[self::INPUT_KEY_SAVE_REWRITES_HISTORY]) && $options[self::INPUT_KEY_SAVE_REWRITES_HISTORY] === true) {
-            $this->_commandOptions['saveOldUrls'] = true;
+            $this->_commandOptions['saveOldUrls'] = false;
         }
 
         if (isset($options[self::INPUT_KEY_NO_REGEN_URL_KEY]) && $options[self::INPUT_KEY_NO_REGEN_URL_KEY] === true) {
