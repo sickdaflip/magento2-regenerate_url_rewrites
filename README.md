@@ -58,8 +58,17 @@ or
 or
 >`$> php bin/magento ok:urlrewrites:regenerate --products-range=101-152`
 
-* to save a current Url Rewrites (you want to get a new URL rewites and save current) use option `--save-old-urls`:
->`$> php bin/magento ok:urlrewrites:regenerate --save-old-urls`
+* to filter products by SKU prefix(es), use option `--sku` (comma-separated, `*` wildcard supported):
+>`$> php bin/magento ok:urlrewrites:regenerate --sku="HOB-*"`
+
+>`$> php bin/magento ok:urlrewrites:regenerate --sku="HOB-*,WOL-*,KIT-*"`
+
+\* if no wildcard is given, a prefix match is assumed (`HOB-` is treated as `HOB-*`).
+
+* by default, old URL Rewrites are **automatically saved as 301 redirects** to prevent SEO issues. To disable this behaviour use option `--no-save-old-urls`:
+>`$> php bin/magento ok:urlrewrites:regenerate --no-save-old-urls`
+
+> **Warning:** using `--no-save-old-urls` will delete old URL rewrites without creating redirects. Existing links and search engine rankings for the old URLs will be lost.
 
 * to prevent regeneration of "url_key" values (use current "url_key" values) use option `--no-regen-url-key`:
 >`$> php bin/magento ok:urlrewrites:regenerate --no-regen-url-key`
@@ -91,12 +100,14 @@ or
 \*\* If you use options `--category-id` or `--categories-range` then you can skip option `--entity-type=category` - extension will understand that you want to use a category entity.
 
 ### YOU CAN COMBINE OPTIONS
->`$> php bin/magento ok:urlrewrites:regenerate --store-id=2 --save-old-urls --no-regen-url-key --no-reindex`
+>`$> php bin/magento ok:urlrewrites:regenerate --store-id=2 --no-regen-url-key --no-reindex`
+
+>`$> php bin/magento ok:urlrewrites:regenerate --sku="HOB-*" --store-id=1 --no-reindex`
 
 ### YOU CANNOT COMBINE THESE OPTIONS
 * `--entity-type=product` and `--category-id`/`--categories-range`
-* `--entity-type=category` and `--product-id`/`--products-range`
-* `--category-id` and/or `--categories-range` and/or `--product-id` and/or `--products-range`
+* `--entity-type=category` and `--product-id`/`--products-range`/`--sku`
+* `--category-id` and/or `--categories-range` and/or `--product-id` and/or `--products-range` and/or `--sku`
 
 ### DEPRECATED OPTIONS
 * `--check-use-category-in-product-url` — extension uses a built-in Magento Url Rewrites generator which check this option in any way.
@@ -111,8 +122,11 @@ or
 * Regenerate Url Rewrites for products with ID's 5,6,7,8,9,10,11,12 in store with ID "2" and do not run full reindex at the end of process:
 >`$> php bin/magento ok:urlrewrites:regenerate --entity-type=product --store-id=2 --products-range=5-12 --no-reindex`
 
-* Regenerate Url Rewrites for category with ID "22" in all stores and save current Url Rewrites:
->`$> php bin/magento ok:urlrewrites:regenerate --entity-type=category --category-id=22 --save-old-urls`
+* Regenerate Url Rewrites for all Hobart products (SKU prefix "HOB-") in store with ID "1":
+>`$> php bin/magento ok:urlrewrites:regenerate --sku="HOB-*" --store-id=1`
+
+* Regenerate Url Rewrites for category with ID "22" in all stores (old URLs are saved as 301 redirects by default):
+>`$> php bin/magento ok:urlrewrites:regenerate --entity-type=category --category-id=22`
 
 * Regenerate Url Rewrites for categories with ID's 21,22,23,24,25 in store with ID "2":
 >`$> php bin/magento ok:urlrewrites:regenerate --entity-type=category --categories-range=21-25 --store-id=2`
